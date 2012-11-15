@@ -40,6 +40,7 @@ class MoufLibraryInstaller extends LibraryInstaller {
 			
 			// We need the "ROOT_URL" variable.
 			require_once 'config.php';
+			define('ROOT_PATH', getcwd().DIRECTORY_SEPARATOR);
 			
 			$multiStepActionService = new MultiStepActionService();
 			
