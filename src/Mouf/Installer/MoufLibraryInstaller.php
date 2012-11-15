@@ -1,6 +1,8 @@
 <?php 
 namespace Mouf\Installer;
 
+use Mouf\Actions\MultiStepActionService;
+
 use Composer\Repository\InstalledRepositoryInterface;
 
 use Composer\Package\PackageInterface;
@@ -34,6 +36,38 @@ class MoufLibraryInstaller extends LibraryInstaller {
 		
 		$extra = $package->getExtra();
 		if (isset($extra['install'])) {
+			
+			// We need the "ROOT_URL" variable.
+			require_once 'config.php';
+			
+			$multiStepActionService = new MultiStepActionService();
+			
+			
+			
+			$installSteps = $thePackage->getInstallSteps();
+			if ($installSteps) {
+				foreach ($installSteps as $extra['install']) {
+					if ($installStep['type'] == 'file') {
+						$multiStepActionService->addAction("redirectAction", array(
+								"packageName"=>$package->getPrettyName(),
+								"redirectUrl"=>ROOT_URL."vendor/".$package->getName()."/".$installStep['file'],
+								"scope"=>$myScope));
+					} elseif ($installStep['type'] == 'url') {
+						$multiStepActionService->addAction("redirectAction", array(
+								"packageName"=>$upgradeOrder['group']."/".$upgradeOrder['name']."/".$upgradeOrder['version']."/package.xml",
+								"redirectUrl"=>ROOT_URL.$installStep['url'],
+								"scope"=>$myScope));
+					} else {
+						throw new Exception("Unknown type during install process.");
+					}
+				}
+			}
+				
+			
+			
+			
+			
+			
 			
 		}
 	}
