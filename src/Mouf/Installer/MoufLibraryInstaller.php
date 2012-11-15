@@ -63,12 +63,7 @@ class MoufLibraryInstaller extends LibraryInstaller {
 				}
 			}
 				
-			
-			
-			
-			
-			
-			
+			$this->io->write("This package needs to be installed. Start your navigator and browse to Mouf UI to install it.");
 		}
 	}
 	
