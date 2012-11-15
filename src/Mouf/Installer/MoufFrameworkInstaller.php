@@ -36,9 +36,8 @@ class MoufFrameworkInstaller extends LibraryInstaller {
 		chdir("vendor/mouf/mouf");
 		
 		// Now, let's try to run Composer recursively on composer-mouf.json...
-		$io = $this->getIO();
-		$composer = Factory::create($io, 'composer-mouf.json');
-		$install = Installer::create($io, $composer);
+		$composer = Factory::create($this->io, 'composer-mouf.json');
+		$install = Installer::create($this->io, $composer);
 		
 		/*$install
 		->setDryRun($input->getOption('dry-run'))
