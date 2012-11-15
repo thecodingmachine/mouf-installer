@@ -23,6 +23,37 @@ class MoufFrameworkInstaller extends LibraryInstaller {
 	public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
 	{
 		parent::update($repo, $initial, $target);
+		
+		$oldWorkingDirectory = getcwd();
+		chdir("vendor/mouf/mouf");
+		
+		// Now, let's try to run Composer recursively on composer-mouf.json...
+		$composer = Factory::create($this->io, 'composer-mouf.json');
+		$install = Installer::create($this->io, $composer);
+		
+		/*$install
+            ->setDryRun($input->getOption('dry-run'))
+            ->setVerbose($input->getOption('verbose'))
+            ->setPreferSource($input->getOption('prefer-source'))
+            ->setPreferDist($input->getOption('prefer-dist'))
+            ->setDevMode($input->getOption('dev'))
+            ->setRunScripts(!$input->getOption('no-scripts'))
+            ->setUpdate(true)
+            ->setUpdateWhitelist($input->getArgument('packages'))
+        ;
+
+        if ($input->getOption('no-custom-installers')) {
+            $install->disableCustomInstallers();
+        }*/
+		$install->setUpdate(true);
+		
+		$result = $install->run();
+		
+		chdir($oldWorkingDirectory);
+		
+		if (!$result) {
+			throw new \Exception("An error occured while running Mouf2 installer.");
+		}
 	}
 	
 	/**
