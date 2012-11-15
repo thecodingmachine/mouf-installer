@@ -42,21 +42,17 @@ class MoufLibraryInstaller extends LibraryInstaller {
 			
 			$multiStepActionService = new MultiStepActionService();
 			
-			
-			
 			$installSteps = $thePackage->getInstallSteps();
 			if ($installSteps) {
 				foreach ($installSteps as $extra['install']) {
 					if ($installStep['type'] == 'file') {
 						$multiStepActionService->addAction("redirectAction", array(
 								"packageName"=>$package->getPrettyName(),
-								"redirectUrl"=>ROOT_URL."vendor/".$package->getName()."/".$installStep['file'],
-								"scope"=>$myScope));
+								"redirectUrl"=>ROOT_URL."vendor/".$package->getName()."/".$installStep['file']));
 					} elseif ($installStep['type'] == 'url') {
 						$multiStepActionService->addAction("redirectAction", array(
-								"packageName"=>$upgradeOrder['group']."/".$upgradeOrder['name']."/".$upgradeOrder['version']."/package.xml",
-								"redirectUrl"=>ROOT_URL.$installStep['url'],
-								"scope"=>$myScope));
+								"packageName"=>getPrettyName(),
+								"redirectUrl"=>ROOT_URL.$installStep['url']));
 					} else {
 						throw new Exception("Unknown type during install process.");
 					}
@@ -80,6 +76,6 @@ class MoufLibraryInstaller extends LibraryInstaller {
 	 */
 	public function supports($packageType)
 	{
-		return 'mouf-template' === $packageType;
+		return 'mouf-library' === $packageType;
 	}
 }
