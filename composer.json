@@ -21,6 +21,6 @@
         }
     },
     "extra" : {
-    	"class": "Mouf\\Installer\\MoufLibraryInstaller"
+    	"class": ["Mouf\\Installer\\MoufLibraryInstaller", "Mouf\\Installer\\MoufFrameworkInstaller"]
     }
 }
