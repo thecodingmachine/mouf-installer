@@ -1,6 +1,8 @@
 <?php 
 namespace Mouf\Installer;
 
+use Composer\Repository\InstalledRepositoryInterface;
+
 use Composer\Package\PackageInterface;
 use Composer\Installer\LibraryInstaller;
 

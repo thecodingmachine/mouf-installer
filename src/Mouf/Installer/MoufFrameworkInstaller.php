@@ -15,7 +15,7 @@ use Composer\Installer\LibraryInstaller;
  * 
  * @author David Négrier
  */
-class MoufLibraryInstaller extends LibraryInstaller {
+class MoufFrameworkInstaller extends LibraryInstaller {
 	
 	/**
 	 * {@inheritDoc}
