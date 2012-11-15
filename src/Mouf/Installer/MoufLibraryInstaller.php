@@ -35,8 +35,6 @@ class MoufLibraryInstaller extends LibraryInstaller {
 		
 		parent::install($repo, $package);
 
-		//require_once __DIR__.'/../Actions/MultiStepActionService.php';
-		
 		$extra = $package->getExtra();
 		if (isset($extra['install'])) {
 			
@@ -45,9 +43,9 @@ class MoufLibraryInstaller extends LibraryInstaller {
 			
 			$multiStepActionService = new MultiStepActionService();
 			
-			$installSteps = $thePackage->getInstallSteps();
+			$installSteps = $extra['install'];
 			if ($installSteps) {
-				foreach ($installSteps as $extra['install']) {
+				foreach ($installSteps as $installStep) {
 					if ($installStep['type'] == 'file') {
 						$multiStepActionService->addAction("redirectAction", array(
 								"packageName"=>$package->getPrettyName(),
