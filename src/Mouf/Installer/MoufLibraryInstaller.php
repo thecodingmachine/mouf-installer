@@ -32,7 +32,10 @@ class MoufLibraryInstaller extends LibraryInstaller {
 	 */
 	public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
 	{
+		
 		parent::install($repo, $package);
+
+		//require_once __DIR__.'/../Actions/MultiStepActionService.php';
 		
 		$extra = $package->getExtra();
 		if (isset($extra['install'])) {
