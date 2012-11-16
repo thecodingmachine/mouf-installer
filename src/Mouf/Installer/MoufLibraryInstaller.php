@@ -38,8 +38,6 @@ class MoufLibraryInstaller extends LibraryInstaller {
 		$extra = $package->getExtra();
 		if (isset($extra['install'])) {
 			
-			// We need the "ROOT_URL" variable.
-			require_once 'config.php';
 			define('ROOT_PATH', getcwd().DIRECTORY_SEPARATOR);
 			
 			$multiStepActionService = new MultiStepActionService();
@@ -50,11 +48,11 @@ class MoufLibraryInstaller extends LibraryInstaller {
 					if ($installStep['type'] == 'file') {
 						$multiStepActionService->addAction("redirectAction", array(
 								"packageName"=>$package->getPrettyName(),
-								"redirectUrl"=>ROOT_URL."vendor/".$package->getName()."/".$installStep['file']));
+								"redirectUrl"=>"vendor/".$package->getName()."/".$installStep['file']));
 					} elseif ($installStep['type'] == 'url') {
 						$multiStepActionService->addAction("redirectAction", array(
 								"packageName"=>getPrettyName(),
-								"redirectUrl"=>ROOT_URL.$installStep['url']));
+								"redirectUrl"=>$installStep['url']));
 					} else {
 						throw new Exception("Unknown type during install process.");
 					}
