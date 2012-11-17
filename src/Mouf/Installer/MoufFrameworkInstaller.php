@@ -45,7 +45,10 @@ class MoufFrameworkInstaller extends LibraryInstaller {
         if ($input->getOption('no-custom-installers')) {
             $install->disableCustomInstallers();
         }*/
-		$install->setUpdate(true);
+		// Note when Mouf is UPDATED, we must run INSTALL on the composer-mouf.json (not update)
+		// This is because we must ensure Mouf dependencies are enforced by the lock file
+		// and we don't want to update the lock file.
+		//$install->setUpdate(true);
 		
 		$result = $install->run();
 		
