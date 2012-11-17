@@ -9,6 +9,8 @@
  */
 namespace Mouf\Actions;
 
+use Mouf\MoufException;
+
 /**
  * This service manages actions that are run in multiple steps (like downloading a set
  * of packages, enabling them and running the install scripts...)
@@ -211,7 +213,7 @@ class MultiStepActionService {
 		if (!is_writable(dirname(ROOT_PATH.$this->actionsStoreFile)) || (file_exists(ROOT_PATH.$this->actionsStoreFile) && !is_writable(ROOT_PATH.$this->actionsStoreFile))) {
 			$dirname = realpath(dirname(ROOT_PATH.$this->actionsStoreFile));
 			$filename = basename(ROOT_PATH.$this->actionsStoreFile);
-			throw new MoufException("Error, unable to write file ".$dirname."/".$filename);
+			throw new \Exception("Error, unable to write file ".$dirname."/".$filename);
 		}
 		$this->loadActionsDescriptor();
 		
