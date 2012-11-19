@@ -36,13 +36,13 @@ class MoufLibraryInstaller extends LibraryInstaller {
 		parent::install($repo, $package);
 
 		$extra = $package->getExtra();
-		if (isset($extra['install'])) {
+		if (isset($extra['mouf']['install'])) {
 			
 			define('ROOT_PATH', getcwd().DIRECTORY_SEPARATOR);
 			
 			$multiStepActionService = new MultiStepActionService();
 			
-			$installSteps = $extra['install'];
+			$installSteps = $extra['mouf']['install'];
 			if ($installSteps) {
 				foreach ($installSteps as $installStep) {
 					if ($installStep['type'] == 'file') {
