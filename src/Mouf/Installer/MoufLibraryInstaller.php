@@ -38,7 +38,7 @@ class MoufLibraryInstaller extends LibraryInstaller {
 		$extra = $package->getExtra();
 		if (isset($extra['mouf']['install'])) {
 			
-			define('ROOT_PATH', getcwd().DIRECTORY_SEPARATOR);
+			$rootPath =	getcwd().DIRECTORY_SEPARATOR;
 			
 			$multiStepActionService = new MultiStepActionService();
 			
@@ -48,7 +48,7 @@ class MoufLibraryInstaller extends LibraryInstaller {
 					if ($installStep['type'] == 'file') {
 						
 						// Are we in selfedit or not? Let's define this using the ROOT_PATH.
-						$selfedit = !file_exists(ROOT_PATH.'vendor/mouf/mouf');
+						$selfedit = !file_exists($rootPath.'vendor/mouf/mouf');
 						
 						if ($selfedit) {
 							$multiStepActionService->addAction("redirectAction", array(
