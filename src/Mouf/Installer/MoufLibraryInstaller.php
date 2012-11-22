@@ -46,9 +46,19 @@ class MoufLibraryInstaller extends LibraryInstaller {
 			if ($installSteps) {
 				foreach ($installSteps as $installStep) {
 					if ($installStep['type'] == 'file') {
-						$multiStepActionService->addAction("redirectAction", array(
-								"packageName"=>$package->getPrettyName(),
-								"redirectUrl"=>"vendor/".$package->getName()."/".$installStep['file']));
+						
+						// Are we in selfedit or not? Let's define this using the ROOT_PATH.
+						$selfedit = !file_exists(ROOT_PATH.'vendor/mouf/mouf');
+						
+						if ($selfedit) {
+							$multiStepActionService->addAction("redirectAction", array(
+									"packageName"=>$package->getPrettyName(),
+									"redirectUrl"=>"vendor/".$package->getName()."/".$installStep['file']));
+						} else {
+							$multiStepActionService->addAction("redirectAction", array(
+									"packageName"=>$package->getPrettyName(),
+									"redirectUrl"=>"../../".$package->getName()."/".$installStep['file']));
+						}
 					} elseif ($installStep['type'] == 'url') {
 						$multiStepActionService->addAction("redirectAction", array(
 								"packageName"=>$package->getPrettyName(),
