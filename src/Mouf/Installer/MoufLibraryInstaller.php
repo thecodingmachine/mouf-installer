@@ -51,7 +51,7 @@ class MoufLibraryInstaller extends LibraryInstaller {
 								"redirectUrl"=>"vendor/".$package->getName()."/".$installStep['file']));
 					} elseif ($installStep['type'] == 'url') {
 						$multiStepActionService->addAction("redirectAction", array(
-								"packageName"=>getPrettyName(),
+								"packageName"=>$package->getPrettyName(),
 								"redirectUrl"=>$installStep['url']));
 					} else {
 						throw new Exception("Unknown type during install process.");
@@ -61,6 +61,8 @@ class MoufLibraryInstaller extends LibraryInstaller {
 				
 			$this->io->write("This package needs to be installed. Start your navigator and browse to Mouf UI to install it.");
 		}
+		// FIXME: rewrite MoufUI.
+		
 	}
 	
 	/**
