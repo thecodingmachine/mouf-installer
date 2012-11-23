@@ -41,6 +41,7 @@ class MoufLibraryInstaller extends LibraryInstaller {
 			if (!defined('ROOT_PATH')) {
 				define('ROOT_PATH', getcwd().DIRECTORY_SEPARATOR);
 			}
+			$rootPath = ROOT_PATH;
 			
 			$multiStepActionService = new MultiStepActionService();
 			
