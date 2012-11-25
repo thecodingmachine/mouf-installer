@@ -1,4 +1,5 @@
 <?php 
+namespace Mouf\Installer;
 
 use Composer\Composer;
 
