@@ -49,6 +49,9 @@ class MoufUIFileWritter {
 		// FIXME: continue here!!!!!
 		// FIXME: continue here!!!!!
 		// TODO: is current package included in getAdminFiles?
+		
+		$adminFiles = $this->getAdminFiles();
+		
 		$fp = fopen($filePath, "w");
 		fwrite($fp, "<?php\n");
 		fwrite($fp, "/**\n");
