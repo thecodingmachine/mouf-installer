@@ -83,6 +83,7 @@ class MoufLibraryInstaller extends LibraryInstaller {
 	public function uninstall(InstalledRepositoryInterface $repo, PackageInterface $package)
 	{
 		parent::uninstall($repo, $package);
+		// FIXME: rewrite MoufUI.
 	}
 	
 	/**
