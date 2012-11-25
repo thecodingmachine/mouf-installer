@@ -22,7 +22,7 @@ class MoufUIFileWritter {
 	 * @param Composer $composer
 	 * @param bool $selfedit
 	 */
-	public function _construct(Composer $composer) {
+	public function __construct(Composer $composer) {
 		$this->composer = $composer;
 	}
 	
@@ -76,6 +76,7 @@ class MoufUIFileWritter {
 	 * @return array<string>
 	 */
 	protected function getAdminFiles() {
+		
 		$localRepos = new CompositeRepository($this->composer->getRepositoryManager()->getLocalRepositories());
 		$packagesList = $localRepos->getPackages();
 	
