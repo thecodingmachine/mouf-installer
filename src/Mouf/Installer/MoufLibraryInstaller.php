@@ -51,6 +51,10 @@ class MoufLibraryInstaller extends LibraryInstaller {
 			$installSteps = $extra['mouf']['install'];
 			if ($installSteps) {
 				foreach ($installSteps as $installStep) {
+					if (!isset($installStep['type'])) {
+						$this->io->write("Warning! In composer.json, no type found for install file/url.");
+						continue;
+					}
 					if ($installStep['type'] == 'file') {
 						
 						// Are we in selfedit or not? Let's define this using the ROOT_PATH.

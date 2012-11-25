@@ -36,22 +36,6 @@ class MoufUIFileWritter {
 			throw new \Exception("Error, unable to write file ".$filePath);
 		}
 		
-		// FIXME: continue here!!!!!
-		// FIXME: continue here!!!!!
-		// FIXME: continue here!!!!!
-		// FIXME: continue here!!!!!
-		// FIXME: continue here!!!!!
-		// FIXME: continue here!!!!!
-		// FIXME: continue here!!!!!
-		// FIXME: continue here!!!!!
-		// FIXME: continue here!!!!!
-		// FIXME: continue here!!!!!
-		// FIXME: continue here!!!!!
-		// FIXME: continue here!!!!!
-		// FIXME: continue here!!!!!
-		// FIXME: continue here!!!!!
-		// TODO: is current package included in getAdminFiles?
-		
 		$adminFiles = $this->getAdminFiles();
 		
 		$fp = fopen($filePath, "w");
