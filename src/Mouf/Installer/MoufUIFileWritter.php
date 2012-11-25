@@ -1,6 +1,8 @@
 <?php 
 namespace Mouf\Installer;
 
+use Composer\Repository\CompositeRepository;
+
 use Composer\Composer;
 
 /**
