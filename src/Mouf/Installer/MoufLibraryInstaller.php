@@ -25,6 +25,10 @@ class MoufLibraryInstaller extends LibraryInstaller {
 	public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
 	{
 		parent::update($repo, $initial, $target);
+		
+		// Rewrite MoufUI.
+		$moufUIFileWriter = new MoufUIFileWritter($this->composer);
+		$moufUIFileWriter->writeMoufUI();
 	}
 	
 	/**
@@ -86,7 +90,10 @@ class MoufLibraryInstaller extends LibraryInstaller {
 	public function uninstall(InstalledRepositoryInterface $repo, PackageInterface $package)
 	{
 		parent::uninstall($repo, $package);
-		// FIXME: rewrite MoufUI.
+		
+		// Rewrite MoufUI.
+		$moufUIFileWriter = new MoufUIFileWritter($this->composer);
+		$moufUIFileWriter->writeMoufUI();
 	}
 	
 	/**
