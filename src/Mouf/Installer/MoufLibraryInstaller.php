@@ -60,11 +60,19 @@ class MoufLibraryInstaller extends LibraryInstaller {
 						// Are we in selfedit or not? Let's define this using the ROOT_PATH.
 						// If ROOT_PATH ends with vendor/mouf/mouf, then yes, we are in selfedit.
 						$rootPath = realpath(ROOT_PATH);
-						$selfedit = false;  
+						echo "rootpath:".$rootPath."\n";
+						$selfedit = false;
+						echo "basename:".basename($rootPath)."\n";
 						if (basename($rootPath) == "mouf") {
 							$rootPathMinus1 = dirname($rootPath);
+							echo "rootpathminus1:".$rootPathMinus1."\n";
+							echo "basename rootpathminus1:".basename($rootPathMinus1)."\n";
+								
 							if (basename($rootPathMinus1) == "mouf") {
 								$rootPathMinus2 = dirname($rootPath);
+								
+								echo "rootpathminus2:".$rootPathMinus2."\n";
+								echo "basename rootpathminus2:".basename($rootPathMinus2)."\n";
 								if (basename($rootPathMinus2) == "vendor") {
 									$selfedit = true;
 								}		
