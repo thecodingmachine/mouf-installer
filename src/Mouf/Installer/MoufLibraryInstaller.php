@@ -31,6 +31,8 @@ class MoufLibraryInstaller extends LibraryInstaller {
 		$moufUIFileWriter->writeMoufUI();
 	}
 	
+	private $multiStepActionService;
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -46,52 +48,25 @@ class MoufLibraryInstaller extends LibraryInstaller {
 				define('ROOT_PATH', getcwd().DIRECTORY_SEPARATOR);
 			}
 			
-			$multiStepActionService = new MultiStepActionService();
+			$this->multiStepActionService = new MultiStepActionService();
 			
 			$installSteps = $extra['mouf']['install'];
+			if (!is_array($installSteps)) {
+				$this->io->write("Error while installing package in Mouf. The install parameter in composer.json (extra->mouf->install) should be an array of files/url to install.");
+				return;
+			}
+			
 			if ($installSteps) {
+				if (self::isAssoc($installSteps)) {
+					// If this is directly an associative array (instead of a numerical array of associative arrays)
+					$this->handleInstallStep($installSteps, $package);
+				}
+				
 				foreach ($installSteps as $installStep) {
-					if (!isset($installStep['type'])) {
-						$this->io->write("Warning! In composer.json, no type found for install file/url.");
-						continue;
-					}
-					if ($installStep['type'] == 'file') {
-						
-						// Are we in selfedit or not? Let's define this using the ROOT_PATH.
-						// If ROOT_PATH ends with vendor/mouf/mouf, then yes, we are in selfedit.
-						$rootPath = realpath(ROOT_PATH);
-						$selfedit = false;
-						if (basename($rootPath) == "mouf") {
-							$rootPathMinus1 = dirname($rootPath);
-								
-							if (basename($rootPathMinus1) == "mouf") {
-								$rootPathMinus2 = dirname($rootPathMinus1);
-								
-								if (basename($rootPathMinus2) == "vendor") {
-									$selfedit = true;
-								}		
-							}	
-						}
-						
-						if ($selfedit) {
-							$multiStepActionService->addAction("redirectAction", array(
-									"packageName"=>$package->getPrettyName(),
-									"redirectUrl"=>"vendor/".$package->getName()."/".$installStep['file']));
-						} else {
-							$multiStepActionService->addAction("redirectAction", array(
-									"packageName"=>$package->getPrettyName(),
-									"redirectUrl"=>"../../".$package->getName()."/".$installStep['file']));
-						}
-					} elseif ($installStep['type'] == 'url') {
-						$multiStepActionService->addAction("redirectAction", array(
-								"packageName"=>$package->getPrettyName(),
-								"redirectUrl"=>$installStep['url']));
-					} else {
-						throw new \Exception("Unknown type during install process.");
-					}
+					$this->handleInstallStep($installStep, $package);
 				}
 			}
-				
+			
 			$this->io->write("This package needs to be installed. Start your navigator and browse to Mouf UI to install it.");
 		}
 		
@@ -99,6 +74,51 @@ class MoufLibraryInstaller extends LibraryInstaller {
 		$moufUIFileWriter = new MoufUIFileWritter($this->composer);
 		$moufUIFileWriter->writeMoufUI();
 		
+	}
+	
+	private function handleInstallStep($installStep, $package) {
+		if (!is_array($installStep)) {
+			$this->io->write("Error while installing package in Mouf. The install parameter in composer.json (extra->mouf->install) should be an array of files/url to install (or a single install descriptor).");
+			return;
+		}
+		if (!isset($installStep['type'])) {
+			$this->io->write("Warning! In composer.json, no type found for install file/url.");
+			return;
+		}
+		if ($installStep['type'] == 'file') {
+		
+			// Are we in selfedit or not? Let's define this using the ROOT_PATH.
+			// If ROOT_PATH ends with vendor/mouf/mouf, then yes, we are in selfedit.
+			$rootPath = realpath(ROOT_PATH);
+			$selfedit = false;
+			if (basename($rootPath) == "mouf") {
+				$rootPathMinus1 = dirname($rootPath);
+		
+				if (basename($rootPathMinus1) == "mouf") {
+					$rootPathMinus2 = dirname($rootPathMinus1);
+		
+					if (basename($rootPathMinus2) == "vendor") {
+						$selfedit = true;
+					}
+				}
+			}
+		
+			if ($selfedit) {
+				$this->multiStepActionService->addAction("redirectAction", array(
+						"packageName"=>$package->getPrettyName(),
+						"redirectUrl"=>"vendor/".$package->getName()."/".$installStep['file']));
+			} else {
+				$this->multiStepActionService->addAction("redirectAction", array(
+						"packageName"=>$package->getPrettyName(),
+						"redirectUrl"=>"../../".$package->getName()."/".$installStep['file']));
+			}
+		} elseif ($installStep['type'] == 'url') {
+			$this->multiStepActionService->addAction("redirectAction", array(
+					"packageName"=>$package->getPrettyName(),
+					"redirectUrl"=>$installStep['url']));
+		} else {
+			throw new \Exception("Unknown type during install process.");
+		}
 	}
 	
 	/**
@@ -119,5 +139,16 @@ class MoufLibraryInstaller extends LibraryInstaller {
 	public function supports($packageType)
 	{
 		return 'mouf-library' === $packageType;
+	}
+	
+	/**
+	 * Returns if an array is associative or not.
+	 *  
+	 * @param array $arr
+	 * @return boolean
+	 */
+	private static function isAssoc($arr)
+	{
+	    return array_keys($arr) !== range(0, count($arr) - 1);
 	}
 }
