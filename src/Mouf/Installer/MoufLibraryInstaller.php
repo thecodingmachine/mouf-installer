@@ -59,10 +59,10 @@ class MoufLibraryInstaller extends LibraryInstaller {
 				if (self::isAssoc($installSteps)) {
 					// If this is directly an associative array (instead of a numerical array of associative arrays)
 					$this->handleInstallStep($installSteps, $package);
-				}
-				
-				foreach ($installSteps as $installStep) {
-					$this->handleInstallStep($installStep, $package);
+				} else {
+					foreach ($installSteps as $installStep) {
+						$this->handleInstallStep($installStep, $package);
+					}
 				}
 			}
 			
@@ -149,14 +149,6 @@ class MoufLibraryInstaller extends LibraryInstaller {
 	 */
 	private static function isAssoc($arr)
 	{
-		echo "******************\n";
-		var_dump($arr);
-		echo "******************\n";
-		var_dump(array_keys($arr) !== range(0, count($arr) - 1));
-		echo "******************\n";
-		var_dump(array_keys($arr));
-		echo "******************\n";
-		var_dump(range(0, count($arr) - 1));
 	    return array_keys($arr) !== range(0, count($arr) - 1);
 	}
 }
