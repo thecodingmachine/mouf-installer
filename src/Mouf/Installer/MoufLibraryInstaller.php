@@ -25,6 +25,10 @@ class MoufLibraryInstaller extends LibraryInstaller {
 	public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
 	{
 		parent::update($repo, $initial, $target);
+		
+		// Rewrite MoufUI.
+		$moufUIFileWriter = new MoufUIFileWritter($this->composer);
+		$moufUIFileWriter->writeMoufUI();
 	}
 	
 	/**
@@ -38,17 +42,36 @@ class MoufLibraryInstaller extends LibraryInstaller {
 		$extra = $package->getExtra();
 		if (isset($extra['mouf']['install'])) {
 			
-			define('ROOT_PATH', getcwd().DIRECTORY_SEPARATOR);
+			if (!defined('ROOT_PATH')) {
+				define('ROOT_PATH', getcwd().DIRECTORY_SEPARATOR);
+			}
 			
 			$multiStepActionService = new MultiStepActionService();
 			
 			$installSteps = $extra['mouf']['install'];
 			if ($installSteps) {
 				foreach ($installSteps as $installStep) {
+					if (!isset($installStep['type'])) {
+						$this->io->write("Warning! In composer.json, no type found for install file/url.");
+						continue;
+					}
 					if ($installStep['type'] == 'file') {
 						
 						// Are we in selfedit or not? Let's define this using the ROOT_PATH.
-						$selfedit = !file_exists(ROOT_PATH.'vendor/mouf/mouf');
+						// If ROOT_PATH ends with vendor/mouf/mouf, then yes, we are in selfedit.
+						$rootPath = realpath(ROOT_PATH);
+						$selfedit = false;
+						if (basename($rootPath) == "mouf") {
+							$rootPathMinus1 = dirname($rootPath);
+								
+							if (basename($rootPathMinus1) == "mouf") {
+								$rootPathMinus2 = dirname($rootPathMinus1);
+								
+								if (basename($rootPathMinus2) == "vendor") {
+									$selfedit = true;
+								}		
+							}	
+						}
 						
 						if ($selfedit) {
 							$multiStepActionService->addAction("redirectAction", array(
@@ -71,7 +94,10 @@ class MoufLibraryInstaller extends LibraryInstaller {
 				
 			$this->io->write("This package needs to be installed. Start your navigator and browse to Mouf UI to install it.");
 		}
-		// FIXME: rewrite MoufUI.
+		
+		// Rewrite MoufUI.
+		$moufUIFileWriter = new MoufUIFileWritter($this->composer);
+		$moufUIFileWriter->writeMoufUI();
 		
 	}
 	
@@ -81,6 +107,10 @@ class MoufLibraryInstaller extends LibraryInstaller {
 	public function uninstall(InstalledRepositoryInterface $repo, PackageInterface $package)
 	{
 		parent::uninstall($repo, $package);
+		
+		// Rewrite MoufUI.
+		$moufUIFileWriter = new MoufUIFileWritter($this->composer);
+		$moufUIFileWriter->writeMoufUI();
 	}
 	
 	/**

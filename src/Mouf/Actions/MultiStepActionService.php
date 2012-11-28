@@ -56,7 +56,6 @@ class MultiStepActionService {
 	 * @return string
 	 */
 	public function getFinalUrlRedirect() {
-		$this->loadActionsDescriptor();
 		return $this->finalUrlRedirect;
 	}
 	
@@ -64,9 +63,7 @@ class MultiStepActionService {
 	 * Sets the URL to redirect at the end of the process.
 	 */
 	public function setFinalUrlRedirect($url) {
-		$this->loadActionsDescriptor();
 		$this->finalUrlRedirect = $url;
-		$this->save();
 	}
 	
 	/**
@@ -75,7 +72,6 @@ class MultiStepActionService {
 	 * @return string
 	 */
 	public function getConfirmationMessage() {
-		$this->loadActionsDescriptor();
 		return $this->confirmationMessage;
 	}
 	
@@ -83,9 +79,7 @@ class MultiStepActionService {
 	 * Sets the confirmation message.
 	 */
 	public function setConfirmationMessage($confirmationMessage) {
-		$this->loadActionsDescriptor();
 		$this->confirmationMessage = $confirmationMessage;
-		$this->save();
 	}
 	
 	private function loadActionsDescriptor() {
@@ -93,12 +87,6 @@ class MultiStepActionService {
 			if (file_exists(ROOT_PATH.$this->actionsStoreFile)) {
 				include ROOT_PATH.$this->actionsStoreFile;
 				$this->actionsDescriptorList = $actions;
-				if (isset($finalUrl)) {
-					$this->finalUrlRedirect = $finalUrl;
-				}
-				if (isset($confirmationMessage)) {
-					$this->confirmationMessage = $confirmationMessage;
-				}
 			} else {
 				$this->actionsDescriptorList = array();
 			}
@@ -225,8 +213,6 @@ class MultiStepActionService {
 		fwrite($fp, " * Do not modify it, as it could be overwritten.\n");
 		fwrite($fp, " */\n");
 		fwrite($fp, "\$actions=".var_export($this->actionsDescriptorList, true).";\n");
-		fwrite($fp, "\$finalUrl=".var_export($this->finalUrlRedirect, true).";\n");
-		fwrite($fp, "\$confirmationMessage=".var_export($this->confirmationMessage, true).";\n");
 		fwrite($fp, "?>");
 		fclose($fp);
 	}
