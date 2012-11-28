@@ -149,6 +149,14 @@ class MoufLibraryInstaller extends LibraryInstaller {
 	 */
 	private static function isAssoc($arr)
 	{
+		echo "******************\n";
+		var_dump($arr);
+		echo "******************\n";
+		var_dump(array_keys($arr) !== range(0, count($arr) - 1));
+		echo "******************\n";
+		var_dump(array_keys($arr));
+		echo "******************\n";
+		var_dump(range(0, count($arr) - 1));
 	    return array_keys($arr) !== range(0, count($arr) - 1);
 	}
 }
