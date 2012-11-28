@@ -64,7 +64,7 @@ class MoufLibraryInstaller extends LibraryInstaller {
 								"packageName"=>$package->getPrettyName(),
 								"redirectUrl"=>$installStep['url']));
 					} else {
-						throw new Exception("Unknown type during install process.");
+						throw new \Exception("Unknown type during install process.");
 					}
 				}
 			}
