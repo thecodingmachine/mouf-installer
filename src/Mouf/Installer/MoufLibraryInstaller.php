@@ -38,7 +38,6 @@ class MoufLibraryInstaller extends LibraryInstaller {
 	 */
 	public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
 	{
-		
 		parent::install($repo, $package);
 
 		$extra = $package->getExtra();
@@ -77,6 +76,7 @@ class MoufLibraryInstaller extends LibraryInstaller {
 	}
 	
 	private function handleInstallStep($installStep, $package) {
+		
 		if (!is_array($installStep)) {
 			$this->io->write("Error while installing package in Mouf. The install parameter in composer.json (extra->mouf->install) should be an array of files/url to install (or a single install descriptor).");
 			return;
