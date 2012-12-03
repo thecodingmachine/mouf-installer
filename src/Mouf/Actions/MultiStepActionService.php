@@ -101,6 +101,7 @@ class MultiStepActionService {
 	public function addAction($instanceName, $params, $selfEdit=false) {
 		$this->loadActionsDescriptor();
 		$this->actionsDescriptorList[] = array("actionProvider"=>$instanceName, "params"=>$params, "status"=>"todo", "selfEdit"=>$selfEdit);
+		echo 'DEBUG TRACE 3 '.$this->actionsStoreFile."\n";
 		$this->save();
 	}
 	
@@ -197,6 +198,7 @@ class MultiStepActionService {
 	 * Creates the actionsStoreFile.
 	 */
 	private function save() {
+		echo 'DEBUG TRACE 4 '.$this->actionsStoreFile."\n";
 		if (!is_writable(dirname($this->actionsStoreFile)) || (file_exists($this->actionsStoreFile) && !is_writable($this->actionsStoreFile))) {
 			throw new \Exception("Error, unable to write file '".$this->actionsStoreFile."'");
 		}
