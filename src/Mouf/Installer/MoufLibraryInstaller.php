@@ -51,7 +51,6 @@ class MoufLibraryInstaller extends LibraryInstaller {
 			
 			$this->multiStepActionService = new MultiStepActionService();
 			$this->multiStepActionService->actionsStoreFile = $this->rootPath."moufRunningActions.php";
-			echo 'DEBUG TRACE 1 '.$this->multiStepActionService->actionsStoreFile."\n";
 			
 			$installSteps = $extra['mouf']['install'];
 			if (!is_array($installSteps)) {
@@ -106,7 +105,6 @@ class MoufLibraryInstaller extends LibraryInstaller {
 			}
 		}
 		
-		echo 'DEBUG TRACE 2 '.$this->multiStepActionService->actionsStoreFile."\n";
 		if ($installStep['type'] == 'file') {
 			if ($selfedit) {
 				$this->multiStepActionService->addAction("redirectAction", array(
