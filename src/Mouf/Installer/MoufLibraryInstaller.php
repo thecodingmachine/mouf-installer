@@ -95,7 +95,7 @@ class MoufLibraryInstaller extends LibraryInstaller {
 		
 		$selfedit = false;
 		if (basename($this->rootPath) == "mouf") {
-			$rootPathMinus1 = dirname($rootPath);
+			$rootPathMinus1 = dirname($this->rootPath);
 		
 			if (basename($rootPathMinus1) == "mouf") {
 				$rootPathMinus2 = dirname($rootPathMinus1);
