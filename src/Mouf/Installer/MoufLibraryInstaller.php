@@ -50,6 +50,7 @@ class MoufLibraryInstaller extends LibraryInstaller {
 			$this->rootPath = getcwd().DIRECTORY_SEPARATOR;
 			
 			$this->multiStepActionService = new MultiStepActionService();
+			$this->multiStepActionService->actionsStoreFile = $this->rootPath."moufRunningActions.php";
 			
 			$installSteps = $extra['mouf']['install'];
 			if (!is_array($installSteps)) {
