@@ -32,6 +32,7 @@ class MoufLibraryInstaller extends LibraryInstaller {
 	}
 	
 	private $multiStepActionService;
+	private $rootPath;
 	
 	/**
 	 * {@inheritDoc}
@@ -43,9 +44,10 @@ class MoufLibraryInstaller extends LibraryInstaller {
 		$extra = $package->getExtra();
 		if (isset($extra['mouf']['install'])) {
 			
-			if (!defined('ROOT_PATH')) {
+			/*if (!defined('ROOT_PATH')) {
 				define('ROOT_PATH', getcwd().DIRECTORY_SEPARATOR);
-			}
+			}*/
+			$this->rootPath = getcwd().DIRECTORY_SEPARATOR;
 			
 			$this->multiStepActionService = new MultiStepActionService();
 			
@@ -89,9 +91,9 @@ class MoufLibraryInstaller extends LibraryInstaller {
 		
 			// Are we in selfedit or not? Let's define this using the ROOT_PATH.
 			// If ROOT_PATH ends with vendor/mouf/mouf, then yes, we are in selfedit.
-			$rootPath = realpath(ROOT_PATH);
+			
 			$selfedit = false;
-			if (basename($rootPath) == "mouf") {
+			if (basename($this->rootPath) == "mouf") {
 				$rootPathMinus1 = dirname($rootPath);
 		
 				if (basename($rootPathMinus1) == "mouf") {
