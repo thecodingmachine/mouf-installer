@@ -198,9 +198,7 @@ class MultiStepActionService {
 	 */
 	private function save() {
 		if (!is_writable(dirname($this->actionsStoreFile)) || (file_exists($this->actionsStoreFile) && !is_writable($this->actionsStoreFile))) {
-			$dirname = realpath(dirname($this->actionsStoreFile));
-			$filename = basename($this->actionsStoreFile);
-			throw new \Exception("Error, unable to write file ".$dirname."/".$filename);
+			throw new \Exception("Error, unable to write file '".$this->actionsStoreFile."'");
 		}
 		$this->loadActionsDescriptor();
 		
