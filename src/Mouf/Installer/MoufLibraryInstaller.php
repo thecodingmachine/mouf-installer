@@ -87,24 +87,24 @@ class MoufLibraryInstaller extends LibraryInstaller {
 			$this->io->write("Warning! In composer.json, no type found for install file/url.");
 			return;
 		}
-		if ($installStep['type'] == 'file') {
 		
-			// Are we in selfedit or not? Let's define this using the ROOT_PATH.
-			// If ROOT_PATH ends with vendor/mouf/mouf, then yes, we are in selfedit.
-			
-			$selfedit = false;
-			if (basename($this->rootPath) == "mouf") {
-				$rootPathMinus1 = dirname($rootPath);
+		// Are we in selfedit or not? Let's define this using the ROOT_PATH.
+		// If ROOT_PATH ends with vendor/mouf/mouf, then yes, we are in selfedit.
 		
-				if (basename($rootPathMinus1) == "mouf") {
-					$rootPathMinus2 = dirname($rootPathMinus1);
+		$selfedit = false;
+		if (basename($this->rootPath) == "mouf") {
+			$rootPathMinus1 = dirname($rootPath);
 		
-					if (basename($rootPathMinus2) == "vendor") {
-						$selfedit = true;
-					}
+			if (basename($rootPathMinus1) == "mouf") {
+				$rootPathMinus2 = dirname($rootPathMinus1);
+		
+				if (basename($rootPathMinus2) == "vendor") {
+					$selfedit = true;
 				}
 			}
+		}
 		
+		if ($installStep['type'] == 'file') {
 			if ($selfedit) {
 				$this->multiStepActionService->addAction("redirectAction", array(
 						"packageName"=>$package->getPrettyName(),
@@ -115,9 +115,20 @@ class MoufLibraryInstaller extends LibraryInstaller {
 						"redirectUrl"=>"../../".$package->getName()."/".$installStep['file']));
 			}
 		} elseif ($installStep['type'] == 'url') {
+			$url = $installStep['url'];
+			if (strpos($url, "?") !== false) {
+				$url .= "&selfedit=".($selfedit?"true":"false");
+			} else {
+				$url .= "?selfedit=".($selfedit?"true":"false");
+			}
+			
 			$this->multiStepActionService->addAction("redirectAction", array(
 					"packageName"=>$package->getPrettyName(),
-					"redirectUrl"=>$installStep['url']));
+					"redirectUrl"=>$url));
+		} elseif ($installStep['type'] == 'class') {
+			$this->multiStepActionService->addAction("redirectAction", array(
+					"packageName"=>$package->getPrettyName(),
+					"redirectUrl"=>"src/direct/run_install_class.php?class=".urlencode($installStep['class'])."&selfedit=".($selfedit?"true":"false")));
 		} else {
 			throw new \Exception("Unknown type during install process.");
 		}
