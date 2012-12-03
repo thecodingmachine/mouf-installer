@@ -30,6 +30,14 @@ class MoufUIFileWritter {
 	 * Rewrites the file.
 	 */
 	public function writeMoufUI() {
+		$dirPath = getcwd()."/mouf";
+		if (!file_exists($dirPath)) {
+			if (!is_writable(getcwd())) {
+				throw new \Exception("Error, unable to create directory ".$dirPath);
+			}
+			mkdir($dirPath, 0777, true);		
+		}
+		
 		$filePath = getcwd()."/mouf/MoufUI.php";
 
 		if ((file_exists($filePath) && !is_writable($filePath)) || (!file_exists($filePath) && !is_writable(dirname($filePath)))) {
