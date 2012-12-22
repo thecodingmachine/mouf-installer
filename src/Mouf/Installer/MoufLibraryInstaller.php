@@ -43,10 +43,7 @@ class MoufLibraryInstaller extends LibraryInstaller {
 
 		$extra = $package->getExtra();
 		if (isset($extra['mouf']['install'])) {
-			
-			/*if (!defined('ROOT_PATH')) {
-				define('ROOT_PATH', getcwd().DIRECTORY_SEPARATOR);
-			}*/
+			/*
 			$this->rootPath = getcwd().DIRECTORY_SEPARATOR;
 			
 			$this->multiStepActionService = new MultiStepActionService();
@@ -68,7 +65,7 @@ class MoufLibraryInstaller extends LibraryInstaller {
 					}
 				}
 			}
-			
+			*/
 			$this->io->write("This package needs to be installed. Start your navigator and browse to Mouf UI to install it.");
 		}
 		
@@ -78,7 +75,7 @@ class MoufLibraryInstaller extends LibraryInstaller {
 		
 	}
 	
-	private function handleInstallStep($installStep, $package) {
+	/*private function handleInstallStep($installStep, $package) {
 		
 		if (!is_array($installStep)) {
 			$this->io->write("Error while installing package in Mouf. The install parameter in composer.json (extra->mouf->install) should be an array of files/url to install (or a single install descriptor).");
@@ -133,7 +130,7 @@ class MoufLibraryInstaller extends LibraryInstaller {
 		} else {
 			throw new \Exception("Unknown type during install process.");
 		}
-	}
+	}*/
 	
 	/**
 	 * {@inheritDoc}
@@ -161,8 +158,8 @@ class MoufLibraryInstaller extends LibraryInstaller {
 	 * @param array $arr
 	 * @return boolean
 	 */
-	private static function isAssoc($arr)
+	/*private static function isAssoc($arr)
 	{
 	    return array_keys($arr) !== range(0, count($arr) - 1);
-	}
+	}*/
 }
