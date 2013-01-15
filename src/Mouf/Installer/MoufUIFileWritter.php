@@ -79,7 +79,7 @@ class MoufUIFileWritter {
 			$extra = $package->getExtra();
 			if (isset($extra["mouf"]["require-admin"])) {
 				foreach ($extra["mouf"]["require-admin"] as $adminFile) {
-					$files[] = $package->getName().DIRECTORY_SEPARATOR.$adminFile;
+					$files[] = $package->getName()."/".$adminFile;
 				}
 			}
 		}
