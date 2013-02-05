@@ -19,7 +19,9 @@ class PackagesOrderer {
 	public static function reorderPackages(array $unorderedPackagesList) {
 		// The very first step is to reorder the packages alphabetically.
 		// This is to ensure the same order every time, even between packages that are unrelated.
-		usort($unorderedPackagesList, array('PackagesOrderer', 'comparePackagesAlphabetically'));
+		usort($unorderedPackagesList, function(PackageInterface $packageA, PackageInterface $packageB) {
+			return strcmp($packageA->getName(), $packageB->getName());
+		});
 		
 		$orderedPackagesList = array();
 		foreach ($unorderedPackagesList as $package) {
@@ -70,15 +72,5 @@ class PackagesOrderer {
 	
 		return $orderedPackagesList;
 	}
-	
-	/**
-	 * Compares 2 packages by their name (used to sort packages).
-	 * 
-	 * @param PackageInterface $packageA
-	 * @param PackageInterface $packageB
-	 * @return number
-	 */
-	public function comparePackagesAlphabetically(PackageInterface $packageA, PackageInterface $packageB) {
-		return strcmp($packageA->getName(), $packageB->getName());
-	}
+
 }
