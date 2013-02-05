@@ -14,9 +14,13 @@ class PackagesOrderer {
 	 * Each time we go through a package, lets ensure the package is not already part of the packages to install.
 	 * If so, ignore.
 	 *
-	 * @param array $unorderedPackagesList
+	 * @param PackageInterface[] $unorderedPackagesList
 	 */
 	public static function reorderPackages(array $unorderedPackagesList) {
+		// The very first step is to reorder the packages alphabetically.
+		// This is to ensure the same order every time, even between packages that are unrelated.
+		usort($unorderedPackagesList, array('PackagesOrderer', 'comparePackagesAlphabetically'));
+		
 		$orderedPackagesList = array();
 		foreach ($unorderedPackagesList as $package) {
 			$orderedPackagesList = self::walkPackagesList($package, $orderedPackagesList, $unorderedPackagesList);
@@ -65,5 +69,16 @@ class PackagesOrderer {
 		$orderedPackagesList[] = $package;
 	
 		return $orderedPackagesList;
+	}
+	
+	/**
+	 * Compares 2 packages by their name (used to sort packages).
+	 * 
+	 * @param PackageInterface $packageA
+	 * @param PackageInterface $packageB
+	 * @return number
+	 */
+	public function comparePackagesAlphabetically(PackageInterface $packageA, PackageInterface $packageB) {
+		return strcmp($packageA->getName(), $packageB->getName());
 	}
 }
