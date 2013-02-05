@@ -41,6 +41,12 @@ class MoufLibraryInstaller extends LibraryInstaller {
 	{
 		parent::install($repo, $package);
 
+		// If this package is installed as part of a mouf upgrade/install, let's not run the MoufUI generation.
+		// Indeed, it has already been commited by the Mouf developers, no need to regenerate Mouf's MoufUI.
+		if (MoufFrameworkInstaller::getIsRunningMoufFrameworkInstaller()) {
+			return;
+		}
+		
 		$extra = $package->getExtra();
 		if (isset($extra['mouf']['install'])) {
 			$this->io->write("This package needs to be installed. Start your navigator and browse to Mouf UI to install it.");
