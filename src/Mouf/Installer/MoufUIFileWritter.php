@@ -69,7 +69,7 @@ class MoufUIFileWritter {
 	 */
 	protected function getAdminFiles() {
 		
-		$localRepos = new CompositeRepository($this->composer->getRepositoryManager()->getLocalRepositories());
+		$localRepos = new CompositeRepository(array($this->composer->getRepositoryManager()->getLocalRepository()));
 		$unorderedPackagesList = $localRepos->getPackages();
 		
 		$packagesList = PackagesOrderer::reorderPackages($unorderedPackagesList);
