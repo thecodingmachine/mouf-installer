@@ -55,6 +55,9 @@ class MoufFrameworkInstaller extends LibraryInstaller {
 		$composer = Factory::create($this->io, 'composer-mouf.json');
 		$install = Installer::create($this->io, $composer);
 		
+		// Let's get some speed by optimizing Mouf's autoloader... always.
+		$install->setOptimizeAutoloader(true);
+		
 		/*$install
 		 ->setDryRun($input->getOption('dry-run'))
 		->setVerbose($input->getOption('verbose'))
