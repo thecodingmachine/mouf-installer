@@ -77,9 +77,13 @@ class MoufFrameworkInstaller extends LibraryInstaller {
 		
 		self::$isRunningMoufFrameworkInstaller = false;
 		
-		if (!$result) {
+		// The $result value has changed in Composer during development.
+		// In earlier version, "false" meant probleam
+		// Now, 0 means "OK".
+		// Check disabled because we cannot rely on Composer on this one.
+		/*if (!$result) {
 			throw new \Exception("An error occured while running Mouf2 installer.");
-		}
+		}*/
 	}
 	
 	/**
