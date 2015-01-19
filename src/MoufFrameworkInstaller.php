@@ -97,7 +97,7 @@ class MoufFrameworkInstaller extends LibraryInstaller {
 			return;
 		}
 		
-		$phpBinaryFile = 'vendor/mouf/mouf/mouf/no_commit/php_binary.php'
+		$phpBinaryFile = 'vendor/mouf/mouf/mouf/no_commit/php_binary.php';
 		
 		$dirname = dirname($phpBinaryFile);
 		
