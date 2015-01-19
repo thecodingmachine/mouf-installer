@@ -33,6 +33,7 @@ class MoufFrameworkInstaller extends LibraryInstaller {
 		parent::update($repo, $initial, $target);
 		
 		$this->installMouf();
+		$this->dumpPhpBinaryFile();
 	}
 	
 	/**
@@ -84,6 +85,34 @@ class MoufFrameworkInstaller extends LibraryInstaller {
 		/*if (!$result) {
 			throw new \Exception("An error occured while running Mouf2 installer.");
 		}*/
+	}
+	
+	/**
+	 * Writes a "vendor/mouf/mouf/mouf/no_commit/php_binary.php" that will contain the path to the Mouf installer.
+	 * @throws \Exception
+	 * @throws MoufException
+	 */
+	private function dumpPhpBinaryFile() {
+		if (!PHP_BINARY) {
+			return;
+		}
+		
+		$phpBinaryFile = 'vendor/mouf/mouf/mouf/no_commit/php_binary.php'
+		
+		$dirname = dirname($phpBinaryFile);
+		
+		if (file_exists($phpBinaryFile) && !is_writable($phpBinaryFile)) {
+			$this->io->write("<error>Error, unable to write file '".$phpBinaryFile."'. Please check file-permissions.</error>");
+			return;
+		}
+		
+		if (!file_exists($phpBinaryFile) && !is_writable($dirname)) {
+			$this->io->write("<error>Error, unable to write a file in directory '".$dirname."'. Please check file-permissions.</error>");
+			return;
+		}
+		
+		$content = "<?php\nreturn ".var_export(PHP_BINARY, true).";\n";
+		file_put_contents($phpBinaryFile, $content);
 	}
 	
 	/**
