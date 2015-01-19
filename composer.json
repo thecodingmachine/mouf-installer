@@ -15,10 +15,11 @@
 		}
 	],
 	"require" : {
-		"php" : ">=5.3.0"
+		"php" : ">=5.3.0",
+		"composer-plugin-api" : "1.0.0"
 	},
 	"conflict" : {
-		"mouf/mouf" : "<2.1"  
+		"mouf/mouf" : "<2.1"
 	},
 	"autoload" : {
 		"psr-4" : {
