@@ -17,6 +17,9 @@
 	"require" : {
 		"php" : ">=5.3.0"
 	},
+	"conflict" : {
+		"mouf/mouf" : "<2.1"  
+	},
 	"autoload" : {
 		"psr-4" : {
 			"Mouf\\Installer\\" : "src/"
