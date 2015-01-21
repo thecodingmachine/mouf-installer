@@ -70,6 +70,13 @@ class MoufPlugin implements PluginInterface, EventSubscriberInterface {
 	 * @throws \Exception
 	 */
 	private static function processHarmonyDependencies(Event $event, $action) {
+		if (!is_dir('vendor/mouf/mouf')) {
+			// If the vendor/mouf/mouf directory does not exist, it means we are
+			// running composer-mouf.sh update
+			// Let's ignore this process.
+			return;
+		}
+		
 		// Let's trigger EmbeddedComposer.
 		$composer = $event->getComposer();
 		$io = $event->getIO();
@@ -164,12 +171,13 @@ class MoufPlugin implements PluginInterface, EventSubscriberInterface {
 							. $targetHarmonyFile . "'");
 				}
 			}
-			if (file_exists($targetHarmonyFile.".lock")) {
-				$result = unlink($targetHarmonyFile.".lock");
+			$lockFile = substr($targetHarmonyFile, 0 -4).".lock";
+			if (file_exists($lockFile)) {
+				$result = unlink($lockFile);
 				if ($result == false) {
 					throw new \Exception(
 							"An error occured while deleting file '"
-							. $targetHarmonyFile . ".lock'");
+							. $lockFile . "'");
 				}
 			}
 		}
