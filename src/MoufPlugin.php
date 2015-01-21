@@ -94,7 +94,7 @@ class MoufPlugin implements PluginInterface, EventSubscriberInterface {
 				if ($package instanceof RootPackage) {
 					$targetDir = "";
 				} else {
-					$targetDir = $package->getName() . "/";
+					$targetDir = "vendor/" . $package->getName() . "/";
 				}
 				if ($package->getTargetDir()) {
 					$targetDir .= $package->getTargetDir() . "/";
@@ -103,14 +103,20 @@ class MoufPlugin implements PluginInterface, EventSubscriberInterface {
 				$composerFile = $targetDir . "composer-harmony.json";
 				if (file_exists($composerFile) && is_readable($composerFile)) {
 					$harmonyData = self::loadComposerHarmonyFile(
-							$composerFile, '../../../' . $targetDir);
-
+							$composerFile, '../../' . $targetDir);
 					$globalHarmonyComposer = array_merge_recursive(
 							$globalHarmonyComposer, $harmonyData);
 				}
 			}
 		}
+		
+		// Finally, let's merge the extra.container-interop section of the composer-mouf.json file
+		$composerMouf = self::loadComposerHarmonyFile("vendor/mouf/mouf/composer-mouf.json", "");
+		$composerMoufSection = [ "extra" => [ "container-interop" => $composerMouf['extra']['container-interop'] ] ];
 
+		$globalHarmonyComposer = array_merge_recursive(
+				$globalHarmonyComposer, $composerMoufSection);
+		
 		$targetHarmonyFile = 'composer-harmony-dependencies.json';
 
 		if (file_exists($targetHarmonyFile) && !is_writable($targetHarmonyFile)) {
@@ -204,8 +210,26 @@ class MoufPlugin implements PluginInterface, EventSubscriberInterface {
 				}
 			}
 		}
+		
+		// Let's wrap all container-factory sections into arrays so they get correctly merged.
+		if (isset($localConfig["extra"]["container-interop"]["container-factory"])) {
+			$factorySection = $localConfig["extra"]["container-interop"]["container-factory"];
+			if (!is_array($factorySection) || self::isAssoc($factorySection)) {
+				$localConfig["extra"]["container-interop"]["container-factory"] = [ $factorySection ];
+			}
+		}
 
 		return $localConfig;
 	}
 	
+	/**
+	 * Returns if an array is associative or not.
+	 *
+	 * @param  array   $arr
+	 * @return boolean
+	 */
+	private static function isAssoc($arr)
+	{
+		return array_keys($arr) !== range(0, count($arr) - 1);
+	}
 }
