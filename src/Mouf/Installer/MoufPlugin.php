@@ -10,7 +10,6 @@ use Composer\Factory;
 use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
 use Composer\Plugin\Capability\CommandProvider;
-use Composer\Plugin\Capable;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
@@ -18,7 +17,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use TheCodingMachine\Discovery\Commands\CommandProvider as DiscoveryCommandProvider;
 use TheCodingMachine\Discovery\Commands\DumpCommand;
 
-class MoufPlugin implements PluginInterface, EventSubscriberInterface, Capable
+class MoufPlugin implements PluginInterface, EventSubscriberInterface
 {
     /**
      * @var Composer
