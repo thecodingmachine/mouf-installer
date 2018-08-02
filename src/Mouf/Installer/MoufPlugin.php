@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Mouf\Installer;
 use Composer\Composer;
 use Composer\IO\IOInterface;
@@ -52,6 +55,7 @@ class MoufPlugin implements PluginInterface, EventSubscriberInterface {
      */
     public function postInstall(Event $event) {
         self::purgeGeneratedContainer($event);
+        self::purgeVendorClassMapCache();
     }
 
     /**
@@ -59,6 +63,7 @@ class MoufPlugin implements PluginInterface, EventSubscriberInterface {
      */
     public function postUpdate(Event $event) {
         self::purgeGeneratedContainer($event);
+        self::purgeVendorClassMapCache();
     }
 
     /**
@@ -72,7 +77,28 @@ class MoufPlugin implements PluginInterface, EventSubscriberInterface {
         $io = $event->getIO();
         $io->write('Purging Mouf compiled container');
         if (file_exists('mouf/no_commit/modificationTimes.php')) {
-            unlink('mouf/no_commit/modificationTimes.php');
+            $result = unlink('mouf/no_commit/modificationTimes.php');
+            if ($result === false) {
+                throw new \Exception('Unable to delete file mouf/no_commit/modificationTimes.php');
+            }
+        }
+    }
+
+    private static function purgeVendorClassMapCache(Event $event) {
+        $io = $event->getIO();
+        $io->write('Purging Mouf vendor class-map cache');
+
+        // Let's delete the vendor cache
+        $vendorCachePaths = array(__DIR__.'/../../../../../../mouf/no_commit/mouf_vendor_analysis.json',
+            __DIR__.'/../../../../../../mouf/no_commit/vendor_analysis.json');
+
+        foreach ($vendorCachePaths as $vendorCachePath) {
+            if (\file_exists($vendorCachePath)) {
+                $result = \unlink($vendorCachePath);
+                if ($result === false) {
+                    throw new \Exception('Unable to delete cache file '.$vendorCachePath);
+                }
+            }
         }
     }
 }
