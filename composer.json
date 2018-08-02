@@ -21,6 +21,6 @@
         }
     },
     "extra" : {
-    	"class": ["Mouf\\Installer\\MoufPugin"]
+    	"class": ["Mouf\\Installer\\MoufPlugin"]
     }
 }
