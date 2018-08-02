@@ -1,6 +1,6 @@
 {
     "name": "mouf/mouf-installer",
-    "type": "composer-installer",
+    "type": "composer-plugin",
     "description": "The Mouf-installer package is a composer in charge of installing any package with the 'mouf-library' type.",
     "keywords": ["mouf", "install"],
     "homepage": "http://mouf-php.com",
@@ -21,6 +21,6 @@
         }
     },
     "extra" : {
-    	"class": ["Mouf\\Installer\\MoufLibraryInstaller", "Mouf\\Installer\\MoufFrameworkInstaller"]
+    	"class": ["Mouf\\Installer\\MoufPlugin"]
     }
 }
