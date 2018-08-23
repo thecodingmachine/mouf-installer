@@ -63,7 +63,7 @@ class MoufPlugin implements PluginInterface, EventSubscriberInterface {
      */
     public function postUpdate(Event $event) {
         self::purgeGeneratedContainer($event);
-        self::purgeVendorClassMapCache();
+        self::purgeVendorClassMapCache($event);
     }
 
     /**
