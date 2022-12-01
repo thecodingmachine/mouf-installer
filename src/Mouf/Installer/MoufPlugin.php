@@ -6,16 +6,10 @@ namespace Mouf\Installer;
 
 use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
-use Composer\Factory;
 use Composer\IO\IOInterface;
-use Composer\Package\PackageInterface;
-use Composer\Plugin\Capability\CommandProvider;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
-use Symfony\Component\Filesystem\Filesystem;
-use TheCodingMachine\Discovery\Commands\CommandProvider as DiscoveryCommandProvider;
-use TheCodingMachine\Discovery\Commands\DumpCommand;
 
 class MoufPlugin implements PluginInterface, EventSubscriberInterface
 {
@@ -67,5 +61,15 @@ class MoufPlugin implements PluginInterface, EventSubscriberInterface
                 }
             }
         }
+    }
+
+    public function deactivate(Composer $composer, IOInterface $io)
+    {
+        // TODO: Implement deactivate() method.
+    }
+
+    public function uninstall(Composer $composer, IOInterface $io)
+    {
+        // TODO: Implement uninstall() method.
     }
 }

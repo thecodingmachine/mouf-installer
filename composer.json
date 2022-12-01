@@ -23,5 +23,8 @@
     },
     "extra" : {
     	"class": ["Mouf\\Installer\\MoufPlugin"]
+    },
+    "require-dev": {
+        "composer/composer": "^2.3"
     }
 }

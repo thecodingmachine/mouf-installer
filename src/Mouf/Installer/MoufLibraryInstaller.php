@@ -1,10 +1,7 @@
-<?php 
+<?php
 namespace Mouf\Installer;
 
-use Mouf\Actions\MultiStepActionService;
-
 use Composer\Repository\InstalledRepositoryInterface;
-
 use Composer\Package\PackageInterface;
 use Composer\Installer\LibraryInstaller;
 
@@ -14,26 +11,23 @@ use Composer\Installer\LibraryInstaller;
  * this class will be called to handle specific actions.
  * In particular, it will look in "extra": { "install":...} and prompt the user to perform installation in Mouf.
  * It will also rewrite the MoufUI file.
- * 
+ *
  * @author David Négrier
  */
 class MoufLibraryInstaller extends LibraryInstaller {
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
 	{
 		parent::update($repo, $initial, $target);
-		
+
 		// Rewrite MoufUI.
 		$moufUIFileWriter = new MoufUIFileWritter($this->composer);
 		$moufUIFileWriter->writeMoufUI();
 	}
-	
-	private $multiStepActionService;
-	private $rootPath;
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -46,30 +40,30 @@ class MoufLibraryInstaller extends LibraryInstaller {
 		if (MoufFrameworkInstaller::getIsRunningMoufFrameworkInstaller()) {
 			return;
 		}
-		
+
 		$extra = $package->getExtra();
 		if (isset($extra['mouf']['install'])) {
 			$this->io->write("This package needs to be installed. Start your navigator and browse to Mouf UI to install it.");
 		}
-		
+
 		// Rewrite MoufUI.
 		$moufUIFileWriter = new MoufUIFileWritter($this->composer);
 		$moufUIFileWriter->writeMoufUI();
-		
+
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public function uninstall(InstalledRepositoryInterface $repo, PackageInterface $package)
 	{
 		parent::uninstall($repo, $package);
-		
+
 		// Rewrite MoufUI.
 		$moufUIFileWriter = new MoufUIFileWritter($this->composer);
 		$moufUIFileWriter->writeMoufUI();
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
