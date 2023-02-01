@@ -6,6 +6,8 @@ use Composer\Repository\InstalledRepositoryInterface;
 use Composer\Factory;
 use Composer\Package\PackageInterface;
 use Composer\Installer\LibraryInstaller;
+use React\Promise\PromiseInterface;
+use function React\Promise\resolve;
 
 /**
  * This class is in charge of handling the installation of the Mouf framework in composer.
@@ -30,9 +32,14 @@ class MoufFrameworkInstaller extends LibraryInstaller {
 	 */
 	public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
 	{
-		parent::update($repo, $initial, $target);
+        $promise = parent::update($repo, $initial, $target);
+        if (!$promise instanceof PromiseInterface) {
+            $promise = resolve(null);
+        }
 
-		$this->installMouf();
+        return $promise->then(function () {
+            $this->installMouf();
+        });
 	}
 
 	/**
@@ -40,9 +47,14 @@ class MoufFrameworkInstaller extends LibraryInstaller {
 	 */
 	public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
 	{
-		parent::install($repo, $package);
+		$promise = parent::install($repo, $package);
+        if (!$promise instanceof PromiseInterface) {
+            $promise = resolve(null);
+        }
 
-		$this->installMouf();
+		return $promise->then(function () {
+            $this->installMouf();
+        });
 	}
 
 	private function installMouf() {
@@ -58,32 +70,15 @@ class MoufFrameworkInstaller extends LibraryInstaller {
 		// Let's get some speed by optimizing Mouf's autoloader... always.
 		$install->setOptimizeAutoloader(true);
 
-		/*$install
-		 ->setDryRun($input->getOption('dry-run'))
-		->setVerbose($input->getOption('verbose'))
-		->setPreferSource($input->getOption('prefer-source'))
-		->setPreferDist($input->getOption('prefer-dist'))
-		->setDevMode($input->getOption('dev'))
-		->setRunScripts(!$input->getOption('no-scripts'))
-		;
-
-		if ($input->getOption('no-custom-installers')) {
-		$install->disableCustomInstallers();
-		}*/
-
 		$result = $install->run();
 
 		chdir($oldWorkingDirectory);
 
 		self::$isRunningMoufFrameworkInstaller = false;
 
-		// The $result value has changed in Composer during development.
-		// In earlier version, "false" meant probleam
-		// Now, 0 means "OK".
-		// Check disabled because we cannot rely on Composer on this one.
-		/*if (!$result) {
+		if ($result !== Installer::ERROR_NONE) {
 			throw new \Exception("An error occured while running Mouf2 installer.");
-		}*/
+		}
 	}
 
 	/**
