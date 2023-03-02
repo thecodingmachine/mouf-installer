@@ -1,7 +1,8 @@
 <?php
 namespace Mouf\Installer;
 
-use Composer\PartialComposer;
+use Composer\Composer;
+use Composer\Package\Package;
 use Composer\Repository\CompositeRepository;
 
 /**
@@ -18,10 +19,10 @@ class MoufUIFileWritter {
 	/**
 	 * Constructs the MoufUIFileWritter.
 	 *
-	 * @param PartialComposer $composer
+	 * @param Composer $composer
 	 * @param bool $selfedit
 	 */
-	public function __construct(PartialComposer $composer) {
+	public function __construct(Composer $composer) {
 		$this->composer = $composer;
 	}
 

@@ -6,8 +6,6 @@ use Composer\Repository\InstalledRepositoryInterface;
 use Composer\Factory;
 use Composer\Package\PackageInterface;
 use Composer\Installer\LibraryInstaller;
-use React\Promise\PromiseInterface;
-use function React\Promise\resolve;
 
 /**
  * This class is in charge of handling the installation of the Mouf framework in composer.
@@ -32,14 +30,9 @@ class MoufFrameworkInstaller extends LibraryInstaller {
 	 */
 	public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
 	{
-        $promise = parent::update($repo, $initial, $target);
-        if (!$promise instanceof PromiseInterface) {
-            $promise = resolve(null);
-        }
+		parent::update($repo, $initial, $target);
 
-        return $promise->then(function () {
-            $this->installMouf();
-        });
+		$this->installMouf();
 	}
 
 	/**
@@ -47,14 +40,9 @@ class MoufFrameworkInstaller extends LibraryInstaller {
 	 */
 	public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
 	{
-		$promise = parent::install($repo, $package);
-        if (!$promise instanceof PromiseInterface) {
-            $promise = resolve(null);
-        }
+		parent::install($repo, $package);
 
-		return $promise->then(function () {
-            $this->installMouf();
-        });
+		$this->installMouf();
 	}
 
 	private function installMouf() {
@@ -76,9 +64,9 @@ class MoufFrameworkInstaller extends LibraryInstaller {
 
 		self::$isRunningMoufFrameworkInstaller = false;
 
-		if ($result !== Installer::ERROR_NONE) {
-			throw new \Exception("An error occured while running Mouf2 installer.");
-		}
+        if ($result !== 0) {
+            throw new \Exception("An error occured while running Mouf2 installer.");
+        }
 	}
 
 	/**
